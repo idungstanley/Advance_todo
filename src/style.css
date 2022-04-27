@@ -69,7 +69,7 @@ form {
   outline: none;
 }
 
-input[type="checkbox"]{
+input[type="checkbox"] {
   display: flex;
   align-self: center;
 }
