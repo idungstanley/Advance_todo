@@ -1,5 +1,5 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 module.exports = {
   mode: 'development',
@@ -25,7 +25,7 @@ module.exports = {
         test: /\.(svg|eot|woff|woff2|ttf)$/,
         type: 'asset/resource',
         generator: {
-          //publicPath: '../fonts/',
+          // publicPath: '../fonts/',
           filename: 'compiled/fonts/[hash][ext][query]',
         },
       },
@@ -39,4 +39,4 @@ module.exports = {
   devServer: {
     static: './dist',
   },
-}
+};
