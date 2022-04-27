@@ -35,7 +35,7 @@ li {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding-left: 3px;
+  padding-left: 10px;
   align-items: center;
 }
 
@@ -61,12 +61,17 @@ form {
 
 .key {
   position: absolute;
-  right: 2px;
+  right: 5px;
   top: 7px;
 }
 
 #input:focus {
   outline: none;
+}
+
+input[type="checkbox"]{
+  display: flex;
+  align-self: center;
 }
 
 .flex {
@@ -81,8 +86,6 @@ form {
 
 .footer {
   height: 40px;
-
-  /* text-align: center; */
   font-family: Raleway, sans-serif;
   color: gray;
   display: flex;
