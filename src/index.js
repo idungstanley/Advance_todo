@@ -10,8 +10,7 @@ let array = [
   { description: 'read my book', completed: 'true', index: 2 },
   { description: 'read my book', completed: 'true', index: 3 },
   { description: 'read my book', completed: 'true', index: 4 },
-  { description: 'read my book', completed: 'true', index: 5 },
-]
+  { description: 'read my book', completed: 'true', index: 5 }]
 
 class Task {
   constructor(description, completed, index) {
@@ -21,6 +20,7 @@ class Task {
   }
   static createTodo = (todo) => {
     const todoList = document.createElement('li')
+    todoList.setAttribute("id", todo.index)
     todoList.innerHTML = `<div class ="flex"><input type="checkbox" class ="check"><p>${todo.description}</p></div> <span class = "material-icons gray">more_vertical</span>`
     todoContainer.appendChild(todoList)
   }
@@ -30,15 +30,10 @@ class Task {
     let description = userInput.value
     let index = new Date().getTime()
     let completed = true
-    let todo = new Task(description, completed, index)
-    array.push(todo)
-    console.log(index)
-    console.log(todo)
-    array.push(todo)
-    setStorage(array)
-    console.log(getStorage())
+    array.forEach(todo =>{
+      Task.createTodo(todo)
+    })
     Task.clearField()
-    Task.createTodo(todo)
   }
 
   static renderTodo = () => {
@@ -53,5 +48,4 @@ class Task {
   }
 }
 
-form.addEventListener('submit', (event) => Task.showBook(event))
-document.addEventListener('DOMContentLoaded', Task.renderTodo)
+document.addEventListener('DOMContentLoaded', Task.showBook)
