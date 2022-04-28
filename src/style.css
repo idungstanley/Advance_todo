@@ -39,6 +39,22 @@ li {
   align-items: center;
 }
 
+.selected {
+background-color: #fff6a7;
+}
+
+.text{
+  height: 39px;
+  background-color: transparent;
+  width: 100%;
+  border: none;
+}
+
+.text:focus{
+  outline: none;
+}
+
+
 .gray {
   color: gray;
   max-width: 30px;
@@ -72,11 +88,17 @@ form {
 input[type="checkbox"] {
   display: flex;
   align-self: center;
+  background-color: transparent;
+}
+
+.vertical{
+ cursor:move;
 }
 
 .flex {
   display: flex;
   gap: 20px;
+  width: 100%;
 }
 
 .todo-container {
