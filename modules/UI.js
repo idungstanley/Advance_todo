@@ -1,5 +1,6 @@
 import Task from './task.js'
-const { getStorage, setStorage } = require('../modules/storage.js')
+
+const { getStorage, setStorage } = require('./storage.js')
 
 export const todoContainer = document.querySelector('.todo-container')
 const userInput = document.querySelector('#input')
@@ -16,10 +17,10 @@ export default class UI {
 
   static showBook = (event) => {
     event.preventDefault()
-    let array = getStorage()
-    let description = userInput.value
-    let index = (array.length + 1).toString()
-    let completed = false
+    const array = getStorage()
+    const description = userInput.value
+    const index = (array.length + 1).toString()
+    const completed = false
     const todo = new Task(description, completed, index)
     array.push(todo)
     setStorage(array)
@@ -35,7 +36,7 @@ export default class UI {
   }
 
   static editText = (newInput, oldValue) => {
-    let localStore = getStorage()
+    const localStore = getStorage()
     localStore.forEach((task) => {
       if (oldValue === task.description) {
         task.description = newInput
@@ -47,9 +48,10 @@ export default class UI {
   static updateIndex = (index, array) => {
     const num = index + 1
     for (let i = num; i < array.length; i += 1) {
-      array[i].index -= 1
-    }
-    return array
+      array[i].index = array[i].index - 1
+     }
+     localStorage.setItem('todos', JSON.stringify(array))
+     return array
   }
 
   static deleteTodo = (event) => {
@@ -62,12 +64,10 @@ export default class UI {
       }
     })
     if (found != null) {
-      todos.splice(todos.indexOf(found), 1)
-      todos.forEach(t=>{
-       if(t.index > todos.indexOf(found)){
-        t.index -= 1;
-       }
-      })
+      console.log(found.index)
+      const index = todos.indexOf(found)
+      todos.splice(index, 1)
+      UI.updateIndex(found.index, todos)
       localStorage.setItem('todos', JSON.stringify(todos))
     }
   }
@@ -82,7 +82,7 @@ export default class UI {
       e.stopPropagation()
       Array_input.forEach((item) => {
         if (item.parentElement.parentElement.classList.contains('selected')) {
-          let li = item.parentElement.parentElement
+          const li = item.parentElement.parentElement
           li.classList.remove('selected')
           li.children[1].textContent = 'more_vertical'
           li.children[1].classList.remove('delete')
@@ -90,7 +90,7 @@ export default class UI {
       })
       if (e.target.classList.contains('text')) {
         e.target.parentElement.parentElement.classList.add('selected')
-        let li = e.target.parentElement.parentElement
+        const li = e.target.parentElement.parentElement
         li.children[1].textContent = 'delete_forever'
         li.children[1].classList.add('delete')
         li.children[1].addEventListener('click', (e) => {
@@ -98,7 +98,7 @@ export default class UI {
             UI.deleteTodo(e)
           }
         })
-        let inputValue = e.target.value
+        const inputValue = e.target.value
         e.target.addEventListener('change', () => {
           const newInput = e.target.value
           UI.editText(newInput, inputValue)
