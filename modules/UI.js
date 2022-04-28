@@ -46,11 +46,9 @@ export default class UI {
   }
 
   static updateIndex = (index, array) => {
-    const num = index + 1
-    for (let i = num; i < array.length; i += 1) {
-      array[i].index = array[i].index - 1
+    for (let i = 0; i < array.length; i += 1) {
+      array[i].index -= 1;
      }
-     localStorage.setItem('todos', JSON.stringify(array))
      return array
   }
 
@@ -64,12 +62,12 @@ export default class UI {
       }
     })
     if (found != null) {
-      console.log(found.index)
-      const index = todos.indexOf(found)
+     const index = todos.indexOf(found)
       todos.splice(index, 1)
+      console.log(todos);
       UI.updateIndex(found.index, todos)
-      localStorage.setItem('todos', JSON.stringify(todos))
-    }
+     }
+     localStorage.setItem('todos', JSON.stringify(todos))
   }
 
   static clearField = () => {
