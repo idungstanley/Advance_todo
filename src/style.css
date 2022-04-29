@@ -40,20 +40,19 @@ li {
 }
 
 .selected {
-background-color: #fff6a7;
+  background-color: #fff6a7;
 }
 
-.text{
+.text {
   height: 39px;
   background-color: transparent;
   width: 100%;
   border: none;
 }
 
-.text:focus{
+.text:focus {
   outline: none;
 }
-
 
 .gray {
   color: gray;
@@ -91,8 +90,8 @@ input[type="checkbox"] {
   background-color: transparent;
 }
 
-.vertical{
- cursor:move;
+.vertical {
+  cursor: move;
 }
 
 .flex {
