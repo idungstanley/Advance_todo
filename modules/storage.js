@@ -1,17 +1,17 @@
 const setStorage = (todoList) => {
-  localStorage.setItem('todos', JSON.stringify(todoList));
-};
+  localStorage.setItem('todos', JSON.stringify(todoList))
+}
 const getStorage = () => {
-  let store;
+  let store
   if (!localStorage.getItem('todos')) {
-    store = [];
+    store = []
   } else {
-    store = JSON.parse(localStorage.getItem('todos'));
+    store = JSON.parse(localStorage.getItem('todos'))
   }
-  return store;
-};
+  return store
+}
 
 module.exports = {
   getStorage,
   setStorage,
-};
+}
