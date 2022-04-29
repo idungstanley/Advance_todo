@@ -39,15 +39,18 @@ export default class UI {
     const localStore = getStorage()
     localStore.forEach((task) => {
       if (oldValue === task.description) {
-        task.description = newInput
+        task.description = newInput;
       }
     })
     setStorage(localStore)
   }
 
   static updateIndex = (index, array) => {
+   let num = index + 1
     for (let i = 0; i < array.length; i += 1) {
+     if(index < array[i].index){
       array[i].index -= 1;
+     }
      }
      return array
   }
@@ -55,14 +58,16 @@ export default class UI {
   static deleteTodo = (event) => {
     const todos = getStorage()
     let found = null
+    let li = event.target.parentElement.children[0];
+    console.log(li.children[1]);
     todos.forEach((todo) => {
-      if (event.target.parentElement.id === todo.index) {
+      if (li.children[1].value === todo.description) {
         event.target.parentElement.remove()
         found = todo
       }
     })
     if (found != null) {
-     const index = todos.indexOf(found)
+     const index = todos.indexOf(found);
       todos.splice(index, 1)
       console.log(todos);
       UI.updateIndex(found.index, todos)
