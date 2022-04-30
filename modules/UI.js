@@ -5,6 +5,10 @@ const { getStorage, setStorage } = require('./storage.js')
 
 export const todoContainer = document.querySelector('.todo-container')
 const userInput = document.querySelector('#input')
+const listItem = document.getElementsByTagName("li")
+const clearCheck = document.querySelector('.clearAll')
+
+const inputs = document.getElementsByTagName('input')
 
 export default class UI {
   static createTodo = (todo) => {
@@ -20,10 +24,10 @@ export default class UI {
     event.preventDefault()
     const array = getStorage()
     let description = userInput.value
-    for(let i= 0; i < array.length; i++){
-      if(array[i].description === description){
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].description === description) {
         UI.clearField()
-        return userInput.value = "This Task already exist!"
+        return (userInput.value = 'This Task already exist!')
       }
     }
     const index = (array.length + 1).toString()
@@ -52,12 +56,10 @@ export default class UI {
     setStorage(localStore)
   }
 
-  static updateIndex = (index, array) => {
-    for (let i = 0; i < array.length; i += 1) {
-      if (index < array[i].index) {
-        array[i].index -= 1
-      }
-    }
+  static updateIndex = (array) => {
+   array.forEach((array,index)=>{
+     array.index = index + 1;
+   })
     return array
   }
 
@@ -115,11 +117,11 @@ export default class UI {
   }
 
   static checkBox = (e) => {
-    console.log(e.target.classList.contains('check'))
     if (e.target.classList.contains('check')) {
       let box = e.target.parentElement.children[0]
       let description = e.target.parentElement.children[1]
       box.addEventListener('change', () => {
+        const isCheck = Array.from(document.querySelectorAll('.check:checked'))
         if (box.checked) {
           description.classList.add('strike')
           Check.check(true, description.value)
@@ -127,25 +129,22 @@ export default class UI {
           description.classList.remove('strike')
           Check.check(false, description.value)
         }
+        
+        clearCheck.addEventListener('click', (e) => {
+           isCheck.forEach(check=>{
+             check.parentElement.parentElement.remove()
+           })
+           UI.clearCompleted(e)
+         })
       })
-      console.log(e.target.parentElement.children[1].value)
-      console.log(e.target.parentElement.children[0])
     }
   }
 
-  static refresh = () =>{
 
-  }
-
-  static clearCompleted = ()=>{
-    let array = getStorage();
-    let filter = array.filter(check=> !check.completed === true)
-    console.log(filter);
+  static clearCompleted = (e) => {
+    let array = getStorage()
+    let filter = array.filter((check) => !check.completed === true)
+    UI.updateIndex(filter)
     setStorage(filter)
-    // for(let i = 0; i < array.length; i+= 1){
-    //   if(array[i].completed === true){
-    //     array.filter()
-    //   }
-    // }
   }
 }
