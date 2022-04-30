@@ -100,11 +100,11 @@ input[type="checkbox"] {
   width: 100%;
 }
 
-.clearAll{
+.clearAll {
   cursor: pointer;
 }
 
-.strike{
+.strike {
   text-decoration: line-through;
   color: gray;
 }
