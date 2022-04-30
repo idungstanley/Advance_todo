@@ -1,9 +1,11 @@
 import Task from './task.js';
+import Check from './Check.js';
 
 const { getStorage, setStorage } = require('./storage.js');
 
 export const todoContainer = document.querySelector('.todo-container');
 const userInput = document.querySelector('#input');
+const clearCheck = document.querySelector('.clearAll');
 
 export default class UI {
   static createTodo = (todo) => {
@@ -19,13 +21,21 @@ export default class UI {
     event.preventDefault();
     const array = getStorage();
     const description = userInput.value;
-    const index = (array.length + 1).toString();
-    const completed = false;
-    const todo = new Task(description, completed, index);
-    array.push(todo);
-    setStorage(array);
-    UI.createTodo(todo);
-    UI.clearField();
+    if (!description === '' || !array.some((value) => value.description === description)) {
+      const index = (array.length + 1).toString();
+      const completed = false;
+      const todo = new Task(description, completed, index);
+      array.push(todo);
+      setStorage(array);
+      UI.createTodo(todo);
+      UI.clearField();
+    } else if (description === '') {
+      userInput.value = 'Please Task cannot be blank';
+      setTimeout(() => UI.clearField(), 1000);
+    } else if (array.some((value) => value.description === userInput.value)) {
+      userInput.value = 'Task already exist, please add another';
+      setTimeout(() => UI.clearField(), 2000);
+    }
   }
 
   static renderTodo = () => {
@@ -45,12 +55,10 @@ export default class UI {
     setStorage(localStore);
   }
 
-  static updateIndex = (index, array) => {
-    for (let i = 0; i < array.length; i += 1) {
-      if (index < array[i].index) {
-        array[i].index -= 1;
-      }
-    }
+  static updateIndex = (array) => {
+    array.forEach((array, index) => {
+      array.index = index + 1;
+    });
     return array;
   }
 
@@ -67,7 +75,7 @@ export default class UI {
     if (found != null) {
       const index = todos.indexOf(found);
       todos.splice(index, 1);
-      UI.updateIndex(found.index, todos);
+      UI.updateIndex(todos);
     }
     localStorage.setItem('todos', JSON.stringify(todos));
   }
@@ -105,5 +113,36 @@ export default class UI {
         });
       }
     }
+  }
+
+  static checkBox = (e) => {
+    if (e.target.classList.contains('check')) {
+      const box = e.target.parentElement.children[0];
+      const description = e.target.parentElement.children[1];
+      box.addEventListener('change', () => {
+        const isCheck = Array.from(document.querySelectorAll('.check:checked'));
+        if (box.checked) {
+          description.classList.add('strike');
+          Check.check(true, description.value);
+        } else {
+          description.classList.remove('strike');
+          Check.check(false, description.value);
+        }
+
+        clearCheck.addEventListener('click', (e) => {
+          isCheck.forEach((check) => {
+            check.parentElement.parentElement.remove();
+          });
+          UI.clearCompleted(e);
+        });
+      });
+    }
+  }
+
+  static clearCompleted = () => {
+    const array = getStorage();
+    const filter = array.filter((check) => !check.completed === true);
+    UI.updateIndex(filter);
+    setStorage(filter);
   }
 }

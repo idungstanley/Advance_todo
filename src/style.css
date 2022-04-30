@@ -100,6 +100,15 @@ input[type="checkbox"] {
   width: 100%;
 }
 
+.clearAll {
+  cursor: pointer;
+}
+
+.strike {
+  text-decoration: line-through;
+  color: gray;
+}
+
 .todo-container {
   list-style: none;
   width: 100%;
