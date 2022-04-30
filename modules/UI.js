@@ -20,8 +20,8 @@ export default class UI {
   static showBook = (event) => {
     event.preventDefault();
     const array = getStorage();
-    const description = userInput.value;
-    if (!description === '' && !array.some((value) => value.description === description)) {
+    let description = userInput.value;
+    if (!description === '' || !array.some((value) => value.description === description)) {
       const index = (array.length + 1).toString();
       const completed = false;
       const todo = new Task(description, completed, index);
@@ -29,10 +29,10 @@ export default class UI {
       setStorage(array);
       UI.createTodo(todo);
       UI.clearField();
-    } else if (description === '') {
+    } else if(description === '') {
       userInput.value = 'Please Task cannot be blank';
       setTimeout(() => UI.clearField(), 1000);
-    } else if (array.some((value) => value.description === userInput.value)) {
+    } else if(array.some((value) => value.description === userInput.value)) {
       userInput.value = 'Task already exist, please add another'
       setTimeout(() => UI.clearField(), 2000)
     }
@@ -75,7 +75,7 @@ export default class UI {
     if (found != null) {
       const index = todos.indexOf(found);
       todos.splice(index, 1);
-      UI.updateIndex(found.index, todos);
+      UI.updateIndex(todos);
     }
     localStorage.setItem('todos', JSON.stringify(todos));
   }
