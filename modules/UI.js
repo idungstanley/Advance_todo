@@ -21,7 +21,7 @@ export default class UI {
     event.preventDefault();
     const array = getStorage();
     const description = userInput.value;
-    if (!description === '' || !array.some((value) => value.description === description)) {
+    if (!description === '') {
       const index = (array.length + 1).toString();
       const completed = false;
       const todo = new Task(description, completed, index);
