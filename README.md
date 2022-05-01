@@ -4,7 +4,7 @@
 # Advance_todo
 > A simple Todo app to add list of books a user has read. It is implemented using HTML, CSS, Webpack, JavaScript and modular architecture. A todo is saved and displayed in Realtime. A todo can be removed from the list of to-dos. Data persistence is implemented using local Storage API.
 
-![screenshot](./screenshot.JPG)
+![screenshot](./images/screenshot.png)
 
 Additional description about the project and its features.
 
