@@ -1,17 +1,11 @@
-const setStorage = (todoList) => {
-  localStorage.setItem('todos', JSON.stringify(todoList));
-};
-const getStorage = () => {
-  let store;
-  if (!localStorage.getItem('todos')) {
-    store = [];
-  } else {
-    store = JSON.parse(localStorage.getItem('todos'));
-  }
-  return store;
-};
+class Storage {
+  static setStorage = (todoList) => {
+    localStorage.setItem('todos', JSON.stringify(todoList));
+  };
 
-module.exports = {
-  getStorage,
-  setStorage,
-};
+  static getStorage = () => {
+    return JSON.parse(localStorage.getItem('todos')) || [];
+  };
+}
+
+export default Storage;
