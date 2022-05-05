@@ -1,13 +1,13 @@
-const { getStorage, setStorage } = require('./storage.js');
+import Storage from './storage.js';
 
 export default class Check {
   static check = (option, desc) => {
-    const array = getStorage();
+    const array = Storage.getStorage();
     array.forEach((checkItem) => {
       if (checkItem.description === desc) {
         checkItem.completed = option;
       }
     });
-    setStorage(array);
+    Storage.setStorage(array);
   }
 }
