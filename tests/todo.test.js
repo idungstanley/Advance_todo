@@ -46,3 +46,63 @@ describe('Testing the TODO app', () => {
   })
 
   
+  describe('DOM tests', () => {
+    let before = null;
+
+    beforeEach(() => {
+      document.body.innerHTML = htmlDocument;
+      before = document.querySelectorAll('.todo-container li');
+    })
+
+    it('showBook(event)', ()=>{
+      const event = {
+        preventDefault: () => {},
+      }
+
+      UI.showBook(event);
+
+      const after = document.querySelectorAll('.todo-container li');
+      expect(after).toBeDefined();
+      expect(after).toHaveLength(before.length + 1);
+    })
+
+    it('deleteTodo(event)', ()=>{
+      document.querySelector('.todo-container').innerHTML = `
+        <li id="1" class="list-item">
+          <div class="flex">
+            <input type="checkbox" class="check" />
+            <input type="text" class="text" value="Hello World!" />
+          </div>
+          <span class="material-icons gray vertical">more_vertical</span>
+        </li>`;
+
+      Storage.setStorage([{
+        description: 'Hello World!',
+        completed: false,
+        index: "1"
+      }]);
+
+      const after = document.querySelectorAll('.todo-container li');
+      expect(after).toBeDefined();
+      expect(after).toHaveLength(before.length + 1);
+
+      const list = document.querySelector('.todo-container');
+      const btnElement = list.querySelector('.material-icons');
+
+      const event2 = {
+        type: 'click',
+        target: btnElement,
+        preventDefault: () => {},
+      };
+
+      const beforeDelete = document.querySelectorAll('.todo-container li');
+      expect(UI.deleteTodo(event2));
+      const afterDelete = document.querySelectorAll('.todo-container li');
+
+      expect(afterDelete).toBeDefined();
+      expect(afterDelete).toHaveLength(beforeDelete.length - 1);
+
+    })
+  })
+
+})
