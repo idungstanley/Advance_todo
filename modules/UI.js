@@ -1,11 +1,8 @@
 import Task from './task.js';
 import Check from './Check.js';
+import Storage from './storage.js';
 
-const { getStorage, setStorage } = require('./storage.js');
-
-export const todoContainer = document.querySelector('.todo-container');
-const userInput = document.querySelector('#input');
-const clearCheck = document.querySelector('.clearAll');
+// const todoContainer = document.querySelector('.todo-container');
 
 export default class UI {
   static createTodo = (todo) => {
@@ -14,20 +11,27 @@ export default class UI {
     todoList.setAttribute('class', 'list-item');
     todoList.innerHTML = `<div class ="flex"><input type="checkbox" class ="check">
     <input type ="text" class="text" value = "${todo.description}"/></div> <span class = "material-icons gray vertical">more_vertical</span>`;
-    todoContainer.appendChild(todoList);
+    document.querySelector('.todo-container').appendChild(todoList);
+  }
+
+  static add(todo) {
+    const array = Storage.getStorage();
+    const index = (array.length + 1).toString();
+    const completed = false;
+    const newTodo = new Task(todo.description, completed, index);
+    array.push(newTodo);
+    Storage.setStorage(array);
+    return newTodo;
   }
 
   static showBook = (event) => {
     event.preventDefault();
-    const array = getStorage();
+    const array = Storage.getStorage();
+    const userInput = document.querySelector('#input');
     const description = userInput.value;
     if (!description === '' || !array.some((value) => value.description === description)) {
-      const index = (array.length + 1).toString();
-      const completed = false;
-      const todo = new Task(description, completed, index);
-      array.push(todo);
-      setStorage(array);
-      UI.createTodo(todo);
+      const newTodo = UI.add({ description })
+      UI.createTodo(newTodo);
       UI.clearField();
     } else if (description === '') {
       userInput.value = 'Please Task cannot be blank';
@@ -39,20 +43,20 @@ export default class UI {
   }
 
   static renderTodo = () => {
-    const todos = getStorage();
+    const todos = Storage.getStorage();
     todos.forEach((todo) => {
       UI.createTodo(todo);
     });
   }
 
   static editText = (newInput, oldValue) => {
-    const localStore = getStorage();
+    const localStore = Storage.getStorage();
     localStore.forEach((task) => {
       if (oldValue === task.description) {
         task.description = newInput;
       }
     });
-    setStorage(localStore);
+    Storage.getStorage(localStore);
   }
 
   static updateIndex = (array) => {
@@ -62,8 +66,15 @@ export default class UI {
     return array;
   }
 
+  static delete(index) {
+    const todos = Storage.getStorage();
+    todos.splice(parseInt(index, 10) - 1, 1);
+    UI.updateIndex(todos);
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }
+
   static deleteTodo = (event) => {
-    const todos = getStorage();
+    const todos = Storage.getStorage();
     let found = null;
     const li = event.target.parentElement.children[0];
     todos.forEach((todo) => {
@@ -74,13 +85,12 @@ export default class UI {
     });
     if (found != null) {
       const index = todos.indexOf(found);
-      todos.splice(index, 1);
-      UI.updateIndex(todos);
+      this.delete(index);
     }
-    localStorage.setItem('todos', JSON.stringify(todos));
   }
 
   static clearField = () => {
+    const userInput = document.querySelector('#input');
     userInput.value = '';
   }
 
@@ -129,6 +139,7 @@ export default class UI {
           Check.check(false, description.value);
         }
 
+        const clearCheck = document.querySelector('.clearAll');
         clearCheck.addEventListener('click', (e) => {
           isCheck.forEach((check) => {
             check.parentElement.parentElement.remove();
@@ -140,9 +151,9 @@ export default class UI {
   }
 
   static clearCompleted = () => {
-    const array = getStorage();
+    const array = Storage.getStorage();
     const filter = array.filter((check) => !check.completed === true);
     UI.updateIndex(filter);
-    setStorage(filter);
+    Storage.getStorage(filter);
   }
 }
