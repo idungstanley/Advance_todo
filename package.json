@@ -4,12 +4,19 @@
   "description": "",
   "main": "index.js",
   "private": "true",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest --coverage",
+    "testwatch": "NODE_OPTIONS='--experimental-vm-modules' jest --coverage --watchAll",
     "watch": "webpack --watch",
     "start": "webpack serve --open",
     "server": "node server.js",
     "build": "webpack"
+  },
+  "jest": {
+    "rootDir": "./tests",
+    "testEnvironment": "jsdom",
+    "verbose": true
   },
   "keywords": [],
   "author": "",
@@ -19,6 +26,8 @@
     "csv-loader": "^3.0.3",
     "express": "^4.18.0",
     "html-webpack-plugin": "^5.5.0",
+    "jest": "^28.0.3",
+    "jest-environment-jsdom": "^28.0.2",
     "style-loader": "^3.3.1",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2",
